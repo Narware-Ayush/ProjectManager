@@ -1,7 +1,8 @@
-import { DashboardSkeleton } from "@/components/skeleton-loaders/dashboard-skeleton";
-import useAuth from "@/hooks/api/use-auth";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { isAuthRoute } from "./common/routePaths";
+// import { DashboardSkeleton } from "@/components/skeleton-loaders/dashboard-skeleton";
+// import useAuth from "@/hooks/api/use-auth";
+//import { Navigate, useLocation } from "react-router-dom";
+// import { isAuthRoute } from "./common/routePaths";
+import { Outlet } from "react-router-dom";
 
 const AuthRoute = () => {
   // const location = useLocation();
