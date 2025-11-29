@@ -19,7 +19,6 @@ import workspaceRoutes from "./routes/workspace.route";
 import memberRoutes from "./routes/member.route";
 import projectRoutes from "./routes/project.route";
 import taskRoutes from "./routes/task.route";
-import { seedRoles } from "./seeders/role.seeder";
 
 
 const app = express();
@@ -30,25 +29,42 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
-  session({
-    name: "session",
-    keys: [config.SESSION_SECRET],
-    maxAge: 24 * 60 * 60 * 1000,
-    secure: config.NODE_ENV === "production",
-    httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
-  })
-);
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use(
   cors({
     origin: config.FRONTEND_ORIGIN,
     credentials: true,
   })
 );
+
+// app.use(
+//   session({
+//     name: "session",
+//     keys: [config.SESSION_SECRET],
+//     maxAge: 24 * 60 * 60 * 1000,
+//     secure: config.NODE_ENV === "production",
+//     httpOnly: true,
+//     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+//   })
+// );
+
+app.set("trust proxy", 1); // VERY IMPORTANT for Render/HTTPS
+
+app.use(
+  session({
+    name: "session",
+    keys: [config.SESSION_SECRET],
+    maxAge: 24 * 60 * 60 * 1000,
+    secure: config.NODE_ENV === "production", // must be true in deployment
+    httpOnly: true,
+    sameSite: config.NODE_ENV === "production" ? "none" : "lax",
+    signed: true, // REQUIRED
+  })
+);
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 // app.get(
 //   `/`,
